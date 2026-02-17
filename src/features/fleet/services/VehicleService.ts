@@ -35,6 +35,11 @@ export const VehicleService = {
     };
   },
 
+  getById: async (id: string) => {
+    const { data } = await api.get<Vehicle>(`/vehicles/${id}`);
+    return data;
+  },
+
   create: async (vehicleData: VehicleFormValues) => {
     const { data } = await api.post<Vehicle>("/vehicles", vehicleData);
     return data;

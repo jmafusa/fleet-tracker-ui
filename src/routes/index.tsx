@@ -4,6 +4,7 @@ import NewVehiclePage from "@/pages/NewVehiclePage";
 import NotFoundPage from "@/pages/NotFoundPage";
 import VehicleDetailPage from "@/pages/VehicleDetailPage";
 import VehiclesListPage from "@/pages/VehiclesListPage";
+import { VehicleCrumb } from "@/features/fleet/components/VehicleCrumb";
 
 export const router = createBrowserRouter([
   {
@@ -22,15 +23,15 @@ export const router = createBrowserRouter([
             index: true,
             element: <VehiclesListPage />,
           },
-          {
-            path: "new",
-            element: <NewVehiclePage />,
-            handle: { crumb: "Nuevo" },
-          },
+          // {
+          //   path: "new",
+          //   element: <NewVehiclePage />,
+          //   handle: { crumb: "Nuevo" },
+          // },
           {
             path: ":id",
             element: <VehicleDetailPage />,
-            handle: { crumb: "Detalle" },
+            handle: { crumb: <VehicleCrumb /> },
           },
         ],
       },

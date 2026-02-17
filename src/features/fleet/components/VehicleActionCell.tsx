@@ -1,6 +1,8 @@
 import type { Vehicle } from "../types";
 import { Button } from "@/components/ui/button";
-import { MoreVertical, Edit, Trash } from "lucide-react";
+import { MoreVertical, Edit, Trash, Eye } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { PATHS } from "@/routes/paths";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +27,8 @@ export const VehicleActionCell = ({
   onEdit,
   onDelete,
 }: VehicleActionCellProps) => {
+  const navigate = useNavigate();
+
   return (
     <TooltipProvider delayDuration={300}>
       <div className="flex items-center justify-end">
@@ -46,7 +50,15 @@ export const VehicleActionCell = ({
             </TooltipContent>
           </Tooltip>
 
-          <DropdownMenuContent align="end" className="w-40">
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem
+              onClick={() => navigate(PATHS.VEHICLES.DETAILS(vehicle.id))}
+              className="cursor-pointer"
+            >
+              <Eye className="mr-2 h-4 w-4" />
+              <span>Ver Detalles</span>
+            </DropdownMenuItem>
+
             <DropdownMenuItem
               onClick={() => onEdit(vehicle)}
               className="cursor-pointer"

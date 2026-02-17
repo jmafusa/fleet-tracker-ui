@@ -1,20 +1,8 @@
 {
   "vehicles": [
     {
-      "id": "f3e9",
-      "licensePlate": "MX-942-BRK",
-      "make": "Nissan",
-      "model": "Frontier",
-      "year": 2023,
-      "status": "Activo",
-      "lastServiceDate": "2024-02-12",
-      "mileage": 8000,
-      "gpsStatus": "En línea",
-      "location": "Puebla"
-    },
-    {
       "id": "c7d1",
-      "licensePlate": "MX-105-XCV",
+      "licensePlate": "MX-105-XCC",
       "make": "Volkswagen",
       "model": "Amarok",
       "year": 2019,

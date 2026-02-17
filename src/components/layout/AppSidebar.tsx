@@ -18,7 +18,7 @@ interface SidebarProps {
 
 const menuItems = [
   { title: "Lista de Vehículos", icon: Car, path: PATHS.VEHICLES.LIST },
-  { title: "Nuevo Vehículo", icon: Plus, path: PATHS.VEHICLES.NEW },
+  // { title: "Nuevo Vehículo", icon: Plus, path: PATHS.VEHICLES.NEW },
 ];
 
 export const AppSidebar = ({ isCollapsed, setIsCollapsed }: SidebarProps) => {
