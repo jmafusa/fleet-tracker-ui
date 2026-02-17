@@ -1,73 +1,53 @@
-# React + TypeScript + Vite
+# Fleet Tracker UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## 🧰 Stack Tecnológico
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Core: React 19 + Vite
+- Routing: React Router 7
+- Data Fetching & Cache: TanStack Query v5 (React Query)
+- Tablas: TanStack Table v8
+- Formularios y Validación: React Hook Form + Zod
+- UI & Estilos: Tailwind CSS v4 + Shadcn/UI
+- Mock API: JSON Server 0.17
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🧱 Arquitectura
 
-## Expanding the ESLint configuration
+El proyecto utiliza una arquitectura basada en features, donde la lógica, servicios y componentes se organizan por dominio funcional.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Este enfoque permite:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Escalabilidad progresiva del código
+- Separación clara de responsabilidades
+- Mantenimiento sencillo y predecible
+- Reutilización de componentes de UI compartidos
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+La navegación y el estado de los datos se gestionan de forma centralizada para asegurar consistencia en toda la aplicación.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚀 Instalación y Ejecución
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Para ejecutar el proyecto localmente es necesario mantener dos procesos activos en terminales separadas.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 1. Clonar e instalar dependencias
+
+git clone <https://github.com/jmafusa/fleet-tracker-ui>  
+cd fleet-tracker-ui  
+npm install
+
+### 2. Iniciar el servidor de datos
+
+npm run server
+
+API disponible en: http://localhost:3000  
+Fuente de datos: data/db.json
+
+### 3. Iniciar el frontend
+
+npm run dev
+
+La aplicación estará disponible en: http://localhost:5173
