@@ -2,7 +2,13 @@ import { useQuery } from "@tanstack/react-query";
 import type { SortingState } from "@tanstack/react-table";
 import { VehicleService } from "../services/VehicleService";
 
-export const useVehicles = (filters: {
+export const useVehicles = ({
+  page,
+  limit,
+  search,
+  statuses,
+  sorting,
+}: {
   page: number;
   limit: number;
   search?: string;
@@ -10,8 +16,9 @@ export const useVehicles = (filters: {
   sorting?: SortingState;
 }) => {
   return useQuery({
-    queryKey: ["vehicles", filters],
-    queryFn: () => VehicleService.getAll(filters),
+    queryKey: ["vehicles", { page, limit, search, statuses, sorting }],
+    queryFn: () =>
+      VehicleService.getAll({ page, limit, search, statuses, sorting }),
     placeholderData: (previousData) => previousData,
   });
 };

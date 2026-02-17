@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
 import { useVehicles } from "@/features/fleet/hooks/useVehicles";
+import { useVehicleMutations } from "@/features/fleet/hooks/useVehicleMutations";
 import { columns } from "@/features/fleet/components/VehicleColumns";
 import { DataTable } from "@/components/shared/DataTable";
 import { DataCard } from "@/components/shared/DataCard";
 import { DataTableToolbar } from "@/components/shared/DataTableToolbar";
 import { Button } from "@/components/ui/button";
+import type { Vehicle } from "@/features/fleet/types";
+import type { VehicleFormValues } from "@/features/fleet/schemas/VehicleSchema";
+import { VehicleDialog } from "@/features/fleet/components/VehicleDialog";
 
 export default function VehiclesListPage() {
   const [page, setPage] = useState(1);
@@ -13,10 +16,37 @@ export default function VehiclesListPage() {
   const [search, setSearch] = useState("");
 
   const { data, isLoading } = useVehicles({ page, limit, search });
+  const { createVehicle, updateVehicle, isCreating, isUpdating } =
+    useVehicleMutations();
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+
+  const handleCreate = () => {
+    setSelectedVehicle(null);
+    setIsDialogOpen(true);
+  };
+
+  const handleFormSubmit = (values: VehicleFormValues) => {
+    if (selectedVehicle) {
+      updateVehicle(
+        { id: selectedVehicle.id, data: values },
+        {
+          onSuccess: () => setIsDialogOpen(false),
+        },
+      );
+    } else {
+      createVehicle(values, {
+        onSuccess: () => setIsDialogOpen(false),
+      });
+    }
+  };
 
   const handleSearch = (value: string) => {
-    setSearch(value);
-    setPage(1);
+    if (value !== search) {
+      setSearch(value);
+      setPage(1);
+    }
   };
 
   return (
@@ -62,11 +92,11 @@ export default function VehiclesListPage() {
               </div>
             </div>
           }
-          actionButton={
-            <Button onClick={() => console.log("Abrir Modal Nuevo")}>
-              <Plus className="mr-2 h-4 w-4" /> Nuevo Vehículo
-            </Button>
-          }
+          primaryAction={{
+            label: "Nuevo Vehículo",
+            onClick: handleCreate,
+            disabled: isLoading || isCreating,
+          }}
         />
       </div>
 
@@ -82,6 +112,14 @@ export default function VehiclesListPage() {
           loading={isLoading}
         />
       </DataCard>
+
+      <VehicleDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        onSubmit={handleFormSubmit}
+        vehicle={selectedVehicle}
+        isPending={isCreating || isUpdating}
+      />
     </div>
   );
 }

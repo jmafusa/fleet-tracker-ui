@@ -1,6 +1,14 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, X, Filter, ArrowUpDown, ChevronDown } from "lucide-react";
+import {
+  Search,
+  X,
+  Filter,
+  ArrowUpDown,
+  ChevronDown,
+  Plus,
+  type LucideIcon,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   DropdownMenu,
@@ -17,7 +25,12 @@ interface DataTableToolbarProps {
   showSorting?: boolean;
   onSortClick?: () => void;
   currentSortLabel?: string;
-  actionButton?: React.ReactNode;
+  primaryAction?: {
+    label: string;
+    icon?: LucideIcon;
+    onClick: () => void;
+    disabled?: boolean;
+  };
 }
 
 export const DataTableToolbar = ({
@@ -29,7 +42,7 @@ export const DataTableToolbar = ({
   showSorting = false,
   onSortClick,
   currentSortLabel = "Ordenar",
-  actionButton,
+  primaryAction,
 }: DataTableToolbarProps) => {
   const [searchValue, setSearchValue] = useState("");
 
@@ -78,24 +91,33 @@ export const DataTableToolbar = ({
         {showFilters && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-10 border-dashed"
-              >
+              <Button variant="outline" size="sm" className="h-10">
                 <Filter className="mr-2 h-4 w-4" />
                 Filtros
                 <ChevronDown className="ml-2 h-4 w-4 opacity-50" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-[200px] p-2">
+            <DropdownMenuContent align="start" className="w-50 p-2">
               {filterContent}
             </DropdownMenuContent>
           </DropdownMenu>
         )}
       </div>
 
-      <div className="flex items-center gap-2">{actionButton}</div>
+      {primaryAction && (
+        <Button
+          onClick={primaryAction.onClick}
+          disabled={primaryAction.disabled}
+          className="h-10 px-4 hover:cursor-pointer"
+        >
+          {primaryAction.icon ? (
+            <primaryAction.icon className="mr-2 h-4 w-4" />
+          ) : (
+            <Plus className="mr-2 h-4 w-4" />
+          )}
+          {primaryAction.label}
+        </Button>
+      )}
     </div>
   );
 };

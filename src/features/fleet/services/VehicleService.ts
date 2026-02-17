@@ -1,6 +1,7 @@
 import api from "@/lib/api";
 import type { Vehicle } from "../types";
 import type { SortingState } from "@tanstack/react-table";
+import type { VehicleFormValues } from "../schemas/VehicleSchema";
 
 export const VehicleService = {
   getAll: async (params: {
@@ -32,6 +33,11 @@ export const VehicleService = {
       total,
       totalPages: Math.ceil(total / params.limit),
     };
+  },
+
+  create: async (vehicleData: VehicleFormValues) => {
+    const { data } = await api.post<Vehicle>("/vehicles", vehicleData);
+    return data;
   },
 
   update: async (id: string, vehicle: Partial<Vehicle>) => {
