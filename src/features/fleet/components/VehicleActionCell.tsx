@@ -16,9 +16,15 @@ import {
 
 interface VehicleActionCellProps {
   vehicle: Vehicle;
+  onEdit: (vehicle: Vehicle) => void;
+  onDelete: (vehicle: Vehicle) => void;
 }
 
-export const VehicleActionCell = ({ vehicle }: VehicleActionCellProps) => {
+export const VehicleActionCell = ({
+  vehicle,
+  onEdit,
+  onDelete,
+}: VehicleActionCellProps) => {
   return (
     <TooltipProvider delayDuration={300}>
       <div className="flex items-center justify-end">
@@ -40,9 +46,9 @@ export const VehicleActionCell = ({ vehicle }: VehicleActionCellProps) => {
             </TooltipContent>
           </Tooltip>
 
-          <DropdownMenuContent align="end" className="w-[160px]">
+          <DropdownMenuContent align="end" className="w-40">
             <DropdownMenuItem
-              onClick={() => console.log("Editar", vehicle.id)}
+              onClick={() => onEdit(vehicle)}
               className="cursor-pointer"
             >
               <Edit className="mr-2 h-4 w-4" />
@@ -51,7 +57,7 @@ export const VehicleActionCell = ({ vehicle }: VehicleActionCellProps) => {
 
             <DropdownMenuItem
               className="text-red-600 focus:text-red-600 focus:bg-red-50 cursor-pointer"
-              onClick={() => console.log("Borrar", vehicle.id)}
+              onClick={() => onDelete(vehicle)}
             >
               <Trash className="mr-2 h-4 w-4" />
               <span>Borrar</span>

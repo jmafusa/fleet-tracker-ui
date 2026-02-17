@@ -4,7 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { VehicleActionCell } from "./VehicleActionCell";
 import { Settings } from "lucide-react";
 
-export const columns: ColumnDef<Vehicle>[] = [
+export const getColumns = (
+  onEdit: (vehicle: Vehicle) => void,
+  onDelete: (vehicle: Vehicle) => void,
+): ColumnDef<Vehicle>[] => [
   {
     accessorKey: "licensePlate",
     header: "Placa",
@@ -49,7 +52,11 @@ export const columns: ColumnDef<Vehicle>[] = [
     ),
     cell: ({ row }) => (
       <div className="flex justify-end">
-        <VehicleActionCell vehicle={row.original} />
+        <VehicleActionCell
+          vehicle={row.original}
+          onEdit={onEdit}
+          onDelete={onDelete}
+        />
       </div>
     ),
   },

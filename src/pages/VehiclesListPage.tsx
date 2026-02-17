@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useVehicles } from "@/features/fleet/hooks/useVehicles";
 import { useVehicleMutations } from "@/features/fleet/hooks/useVehicleMutations";
-import { columns } from "@/features/fleet/components/VehicleColumns";
+import { getColumns } from "@/features/fleet/components/VehicleColumns";
 import { DataTable } from "@/components/shared/DataTable";
 import { DataCard } from "@/components/shared/DataCard";
 import { DataTableToolbar } from "@/components/shared/DataTableToolbar";
+import { ConfirmDialog } from "@/components/shared/ConfirmDialog";
 import { Button } from "@/components/ui/button";
 import type { Vehicle } from "@/features/fleet/types";
 import type { VehicleFormValues } from "@/features/fleet/schemas/VehicleSchema";
@@ -16,16 +17,54 @@ export default function VehiclesListPage() {
   const [search, setSearch] = useState("");
 
   const { data, isLoading } = useVehicles({ page, limit, search });
-  const { createVehicle, updateVehicle, isCreating, isUpdating } =
-    useVehicleMutations();
+  const {
+    createVehicle,
+    updateVehicle,
+    deleteVehicle,
+    isCreating,
+    isUpdating,
+    isDeleting,
+  } = useVehicleMutations();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedVehicle, setSelectedVehicle] = useState<Vehicle | null>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [vehicleToDelete, setVehicleToDelete] = useState<Vehicle | null>(null);
 
   const handleCreate = () => {
     setSelectedVehicle(null);
     setIsDialogOpen(true);
   };
+
+  const handleEdit = (vehicle: Vehicle) => {
+    setSelectedVehicle(vehicle);
+    setIsDialogOpen(true);
+  };
+
+  const handleDelete = (vehicle: Vehicle) => {
+    setVehicleToDelete(vehicle);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (vehicleToDelete) {
+      deleteVehicle(vehicleToDelete.id, {
+        onSuccess: () => {
+          setIsDeleteDialogOpen(false);
+          setVehicleToDelete(null);
+        },
+      });
+    }
+  };
+
+  const handleCloseDeleteDialog = () => {
+    if (!isDeleting) {
+      setIsDeleteDialogOpen(false);
+      setVehicleToDelete(null);
+    }
+  };
+
+  const columns = useMemo(() => getColumns(handleEdit, handleDelete), []);
 
   const handleFormSubmit = (values: VehicleFormValues) => {
     if (selectedVehicle) {
@@ -119,6 +158,15 @@ export default function VehiclesListPage() {
         onSubmit={handleFormSubmit}
         vehicle={selectedVehicle}
         isPending={isCreating || isUpdating}
+      />
+
+      <ConfirmDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+        onConfirm={handleConfirmDelete}
+        title="Eliminar Vehículo"
+        description={`¿Estás seguro de eliminar el vehículo con placa ${vehicleToDelete?.licensePlate}?`}
+        isLoading={isDeleting}
       />
     </div>
   );

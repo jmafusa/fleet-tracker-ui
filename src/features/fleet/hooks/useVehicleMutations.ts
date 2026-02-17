@@ -11,7 +11,7 @@ export const useVehicleMutations = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["vehicles"] });
       toast.success("Vehículo registrado", {
-        description: "La unidad ha sido añadida a la flota.",
+        description: "La unidad ha sido añadida a la lista.",
       });
     },
     onError: () => toast.error("Error al crear el vehículo"),
